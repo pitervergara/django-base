@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE} 
+      restart: always
+    volumes:
+    - ./.docker/db/initdb.d:/docker-entrypoint-initdb.d
+
+  app:
+    build:
+      context: ./.docker/app/
+      args:
+        - HTTP_PROXY
+        - HTTPS_PROXY
+        - FTP_PROXY
+        - ALL_PROXY
+        - NO_PROXY
+        - http_proxy
+        - https_proxy
+        - ftp_proxy
+        - all_proxy
+        - no_proxy
+        - CONTAINER_USER_ID=${CONTAINER_USER_ID}
+        - CONTAINER_GROUP_ID=${CONTAINER_GROUP_ID}
+        - CONTAINER_USER_NAME=${CONTAINER_USER_NAME}
+
+    volumes:
+      - ./:/home/${CONTAINER_USER_NAME}/
+      - ./.docker/app/entrypoint.sh:/entrypoint.sh
+      - ${HOST_PATH_FOR_VE}:/home/${CONTAINER_USER_NAME}/venv
+    environment:
+      DJANGO_PROJECT_NAME: ${DJANGO_PROJECT_NAME}
+      DJANGO_SETTINGS_MODULE: '${DJANGO_PROJECT_NAME}.settings'
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_HOST: 'mysql'
+      MYSQL_PORT: '3306'
+      ENVIRONMENT: ${ENVIRONMENT}
+      PYDEV_DEBUG: 'True'
+    links:
+      - db
+    ports:
+      - "8000:8000"
+
+  devtool_myadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 9090:80
+    links:
+      - db:db

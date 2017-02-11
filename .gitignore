@@ -1,0 +1,6 @@
+\.~lock*
+*.pyc
+*.pyo
+*.bak
+.bash_history
+.pip
