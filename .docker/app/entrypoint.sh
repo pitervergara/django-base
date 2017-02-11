@@ -22,7 +22,7 @@ create_virtualenv_if_does_not_exists() {
 
 	if [ "${num_files}" == "0" ]; then
 		echo "Creating virtualenv"
-		virtualenv ${ve_path}
+		virtualenv -p /usr/local/bin/python ${ve_path}
 	fi
 }
 
