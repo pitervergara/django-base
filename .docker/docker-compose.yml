@@ -38,7 +38,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_HOST: 'mysql'
+      MYSQL_HOST: 'db'
       MYSQL_PORT: '3306'
       ENVIRONMENT: ${ENVIRONMENT}
       PYDEV_DEBUG: 'True'
