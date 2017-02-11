@@ -4,3 +4,5 @@
 *.bak
 .bash_history
 .pip
+**/.cache
+.python_history

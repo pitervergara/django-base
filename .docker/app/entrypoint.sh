@@ -28,7 +28,9 @@ create_virtualenv_if_does_not_exists() {
 
 install_project_python_requirements() {
 	echo "Installing python requirements"
-	${ve_path}/bin/pip install -r "./src/requirements.txt"
+	${ve_path}/bin/pip install --upgrade pip && \
+		${ve_path}/bin/pip install -U setuptools && \
+			${ve_path}/bin/pip install -r "./src/requirements.txt"
 }
 
 start_new_project_if_folder_is_empty() {

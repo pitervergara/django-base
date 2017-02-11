@@ -25,7 +25,7 @@ RUN apt-get update && \
 		python-virtualenv \
 		netcat \
 		libmysqlclient-dev \
-		python-dev && \
+		python3-dev && \
 	apt-get autoremove -y 
 
 COPY ./entrypoint.sh /entrypoint.sh
@@ -34,7 +34,6 @@ RUN useradd -U -u ${CONTAINER_USER_ID} -m -d /home/${CONTAINER_USER_NAME} -s /bi
 
 COPY ./* /home/${CONTAINER_USER_NAME}/
 RUN mkdir /home/${CONTAINER_USER_NAME}/venv
-COPY ./sitecustomize.py /home/${CONTAINER_USER_NAME}/venv/local/lib/python2.7
 
 EXPOSE 8000
 VOLUME /home/${CONTAINER_USER_NAME}
