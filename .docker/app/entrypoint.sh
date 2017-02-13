@@ -16,6 +16,17 @@ function ctrl_c() {
     exit -1
 }
 
+print_env(){
+	echo ""
+	echo ""
+	echo "CWD: $(pwd)"
+	echo "ENVIRONMENT:"
+	echo "-----------------"
+	env
+	echo "-----------------"
+	echo ""
+	echo ""
+}
 
 create_virtualenv_if_does_not_exists() {
 	num_files=$(find ${ve_path} -maxdepth 1 -mindepth 1 | wc -l)
@@ -69,6 +80,18 @@ handle_django_fixtures(){
 	fi
 }
 
+
+handle_django_tranlations(){
+
+	echo "Makingmessages"
+	source ${ve_path}/bin/activate
+	cd ${src_path}
+	python manage.py makemessages 
+	python manage.py compilemessages
+	cd -
+
+}
+
 wait_requirements_for_this_container() {
 	missing_requirement=true
 	while [ "${missing_requirement}" == "true" ]
@@ -96,12 +119,13 @@ echo "Running $0 (cwd is '$(pwd)') "
 
 if [ "${cmd}" == "default" ]; then
 	echo "Running default command"	
-
+	print_env && \
 	create_virtualenv_if_does_not_exists && \
 	install_project_python_requirements && \
 	start_new_project_if_folder_is_empty && \
 	wait_requirements_for_this_container && \
 	handle_django_migrations && \
+	handle_django_tranlations && \
 	handle_django_fixtures && \
 	exec ${default_cmd}
 else 
